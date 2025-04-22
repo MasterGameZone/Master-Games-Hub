@@ -29,12 +29,40 @@
   <h1>🎲 Random Number Generator</h1>
   <div id="number">0</div>
   <button onclick="generateRandom()">Generate</button>
+  <button id="a2hs" style="display:none;position:fixed;bottom:10px;left:10px;">📱 Add to Home Screen</button>
+
 
   <script>
     function generateRandom() {
       const randomNumber = Math.floor(Math.random() * 100) + 1;
       document.getElementById('number').textContent = randomNumber;
     }
+
+    let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+
+  // Show custom UI (e.g. a button or banner)
+  const a2hsBtn = document.getElementById('a2hs');
+  a2hsBtn.style.display = 'block';
+
+  a2hsBtn.addEventListener('click', () => {
+    a2hsBtn.style.display = 'none';
+    deferredPrompt.prompt();
+
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted A2HS prompt');
+      } else {
+        console.log('User dismissed A2HS prompt');
+      }
+      deferredPrompt = null;
+    });
+  });
+});
+
   </script>
 <script>
   if ('serviceWorker' in navigator) {
