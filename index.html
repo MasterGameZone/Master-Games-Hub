@@ -1,63 +1,324 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="manifest" href="manifest.json">
-  <link rel="icon" href="data:," type="image/x-icon">
-  <title>Random Number Generator</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 100px;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-      box-sizing: border-box;
-    }
-    #number {
-      font-size: 3rem;
-      margin: 20px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      cursor: pointer;
-      margin: 5px;
-      border: none;
-      border-radius: 4px;
-      background: #4CAF50;
-      color: white;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #45a049;
-    }
-    #a2hs {
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #ff9800 !important;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:," type="image/x-icon">
+    <title>Master Game Zone</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background-color: #21D4FD;
+			background-image: linear-gradient(19deg, #21D4FD 0%, #B721FF 100%);
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            margin: 30px 0;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 120px);
+            gap: 20px;
+            margin: 1px 0;
+            animation: appear 1s ease-out;
+        }
+
+        .button-grid a {
+            background: linear-gradient(45deg, #ff7e5f, #feb47b);
+            border: none;
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            font-size: 16px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .button-grid a:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .button-grid a:active {
+            transform: translateY(0);
+        }
+
+        .floating-icon {
+            position: fixed;
+            bottom: 20px;
+            width: 60px;
+            height: 60px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s;
+            z-index: 10;
+        }
+
+        .floating-icon:hover {
+            transform: scale(1.1);
+        }
+
+        #profile {
+            left: 20px;
+        }
+
+        #share {
+            right: 20px;
+        }
+
+        /* Coming Soon Modal */
+        #comingSoon {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s;
+            z-index: 20;
+        }
+
+        #comingSoon.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #comingSoonContent {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            animation: zoomIn 0.5s ease-out;
+        }
+        
+        #about-us {
+        	position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: black;
+            z-index: 99;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            display: none;
+            padding: 10px;
+        }
+        #about-us-content {
+        	color: #ffffff;
+            line-height: 20px;
+            border: 2px solid grey;
+            padding: 20px;
+            background: #111111;
+            border-radius: 15px;
+            
+            h2 {
+            	text-align: center;
+                margin-bottom: 30px;
+            }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes appear {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @media (max-width: 1000px) {
+            .button-grid {
+                grid-template-columns: repeat(3, 120px);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .button-grid {
+                grid-template-columns: repeat(2, 120px);
+            }
+        }
+        @keyframes scalePulse {
+  			5%   { transform: scale(1); }
+  			45%  { transform: scale(1.1) translateX(0); }
+  			47%  { transform: scale(1.1) translateX(-2px); }
+  			49%  { transform: scale(1.1) translateX(2px); }
+  			51%  { transform: scale(1.1) translateX(-2px); }
+  			53%  { transform: scale(1.1) translateX(2px); }
+  			55%  { transform: scale(1.1) translateX(0); }
+  			95%  { transform: scale(1); }
+		}
+
+		.scale-animation {
+  			animation: scalePulse 3s infinite ease-in-out;
+		}
+        @keyframes colorSwipe {
+  0% {
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+
+.color-swipe-text {
+  background: linear-gradient(to right, #ff0080, #7928ca, #00ffff);
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: colorSwipe 3s linear infinite;
+}
+
+
+        #about-us-btn {
+        	background: none;
+            border: none;
+            font-size: 22px;
+            margin-top: 50px;
+            font-weight: bolder;
+            text-decoration: underline;
+        }
+        #close-btn {
+        	position: absolute;
+            right: 30px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-  <h1>🎲 Random Number Generator</h1>
-  <div id="number">0</div>
-  <button onclick="generateRandom()">Generate</button>
-  <button id="a2hs" style="display:none;">📱 Add to Home Screen</button>
+    <h1>Some of Games</h1>
+    
+    <div class="button-grid">
+        <a href="https://mastergamezone.github.io/striker-game/" target="_blank">Striker Game</a>
+        <a href="https://mastergamezone.github.io/color-chart/" target="_blank">Color Chart</a>
+        <a href="https://mastergamezone.github.io/memory-card/" target="_blank">Memory Card</a>
+        <a href="https://mastergamezone.github.io/lights-puzzle/" target="_blank">Lights Puzzle</a>
+        <a href="https://mastergamezone.github.io/dot-battle/" target="_blank">Dot Battle</a>
+        <a href="https://mastergamezone.github.io/dodge-fire/" target="_blank">Dodge & Fire </a>
+        <a href="https://mastergamezone.github.io/dodge-blocks/" target="_blank">Dodge Blocks</a>
+        <a href="https://mastergamezone.github.io/block-shooting/" target="_blank">Block Shooting</a>
+        <a href="https://mastergamezone.github.io/tic-tac-toe/" target="_blank">Tic Tac Toe</a>
+        <a href="https://mastergamezone.github.io/ping-pong/" target="_blank">Ping Pong</a>
+    </div>
 
-  <script>
-    function generateRandom() {
-      const randomNumber = Math.floor(Math.random() * 100) + 1;
-      document.getElementById('number').textContent = randomNumber;
-    }
+    <!-- Profile Icon (now opens modal) -->
+    <div id="profile" class="floating-icon" onclick="showComingSoon()">
+        <img src="https://img.icons8.com/ios-glyphs/30/000000/user-male-circle.png"/>
+    </div>
 
-    let deferredPrompt;
+    <!-- Share Icon -->
+    <div id="share" class="floating-icon" onclick="shareWebsite()">
+        <img src="https://img.icons8.com/ios-glyphs/30/000000/share.png"/>
+    </div>
+
+    <!-- Coming Soon Modal -->
+    <div id="comingSoon">
+        <div id="comingSoonContent">
+            <h2 style="color: #333; margin: 0;">Coming Soon...</h2>
+        </div>
+    </div>
+    <!-- About us model -->
+    <div id="about-us">
+        <div id="about-us-content">
+        <button id="close-btn" onclick="closeAboutUs()">X</button>
+        	<h2>About us - Read it. </h2>
+            <p>
+            We are passionate creators from a non-technical background, driven by a dream to build something extraordinary — a next-gen space racing game with hyper-realistic controls, thrilling missions, and immersive challenges like you’ve never seen before.
+
+We're not just making a game — we're building an experience.
+
+To bring this vision to life, we need the help of professionals and premium tools, which come at a cost. That’s why we’re reaching out for your support. Even a small contribution can help us take a big step toward completing this unique project.
+
+If you choose to donate, feel free to share your name and country so we can personally thank you — and who knows, maybe even return the favor with rewards in the future.<br>
+
+This isn't just a donation — it's a belief in a vision, and maybe... an investment in something truly meaningful. <br><br>
+
+Every dollar will be used directly toward development and design — we’re all in on this dream. <br><br>
+            </p>
+            <p class="color-swipe-text" style="margin-bottom: -15px;">"Donate now to become a part of our wonderful journey and stay in our memories forever."</p><br>
+            <button onclick="myFunction('paypaluid')">copy paypal uid</button>
+            <button onclick="myFunction('phonepeuid')">copy phonepe uid</button>
+            <button onclick="myFunction('account no')">copy account no</button>
+        </div>
+    </div>
+    <button id="about-us-btn" onclick='showAboutUs()'class="scale-animation" >About us - Must Read.</button>
+    <button id="a2hs" style="display:none; z-index: 999;">📱 Add to Home Screen</button>
+    <script>
+    let value = "";
+    // show about us modal 
+    	function showAboutUs() {
+    		const about = document.getElementById('about-us');
+            about.style.display = 'block';
+    	}
+        // Show coming soon modal
+        function showComingSoon() {
+            const modal = document.getElementById('comingSoon');
+            modal.classList.add('active');
+            
+            // Close on background click
+            modal.addEventListener('click', (e) => {
+                if(e.target === modal) {
+                    modal.classList.remove('active');
+                }
+            });
+        }
+
+        // Share functionality
+        function shareWebsite() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Check out this website!',
+                    url: window.location.href
+                });
+            } else {
+                alert('Share feature not available in your browser');
+            }
+        }
+        function closeAboutUs() {
+        	const about = document.getElementById('about-us');
+            about.style.display = 'none'; 
+        }
+        function myFunction(value) {
+  			// Copy the text inside the text field
+  			navigator.clipboard.writeText(value);
+  
+  			// Alert the copied text
+  			alert("Copied the text: " + value);
+}
+
+let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
@@ -76,12 +337,12 @@
     });
   </script>
 
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js')
-        .then(reg => console.log('SW Registered:', reg))
-        .catch(err => console.error('SW Registration Failed:', err));
-    }
-  </script>
+<script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js')
+      .then(reg => console.log('SW Registered:', reg))
+      .catch(err => console.error('SW Registration Failed:', err));
+  }
+</script>
 </body>
 </html>
