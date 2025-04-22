@@ -215,6 +215,14 @@
             right: 30px;
             font-weight: bold;
         }
+	    #a2hs {
+          display: none;
+          z-index: 999;
+          position: fixed;
+          transform: translate(-50%, -50%);
+          left: 50%;
+          top: 50%;
+        }
     </style>
 </head>
 <body>
@@ -274,7 +282,7 @@ Every dollar will be used directly toward development and design — we’re all
         </div>
     </div>
     <button id="about-us-btn" onclick='showAboutUs()'class="scale-animation" >About us - Must Read.</button>
-    <button id="a2hs" style="display:none; z-index: 999;">📱 Add to Home Screen</button>
+    <button id="a2hs">📱 Add to Home Screen</button>
     <script>
     let value = "";
     // show about us modal 
