@@ -12,6 +12,10 @@
       flex-direction: column;
       align-items: center;
       margin-top: 100px;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
+      box-sizing: border-box;
     }
     #number {
       font-size: 3rem;
@@ -21,16 +25,30 @@
       padding: 10px 20px;
       font-size: 1rem;
       cursor: pointer;
+      margin: 5px;
+      border: none;
+      border-radius: 4px;
+      background: #4CAF50;
+      color: white;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    #a2hs {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ff9800 !important;
     }
   </style>
 </head>
 <body>
-
   <h1>🎲 Random Number Generator</h1>
   <div id="number">0</div>
   <button onclick="generateRandom()">Generate</button>
-  <button id="a2hs" style="display:none;position:fixed;bottom:10px;left:10px;">📱 Add to Home Screen</button>
-
+  <button id="a2hs" style="display:none;">📱 Add to Home Screen</button>
 
   <script>
     function generateRandom() {
@@ -39,37 +57,30 @@
     }
 
     let deferredPrompt;
-
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-
-  // Show custom UI (e.g. a button or banner)
-  const a2hsBtn = document.getElementById('a2hs');
-  a2hsBtn.style.display = 'block';
-
-  a2hsBtn.addEventListener('click', () => {
-    a2hsBtn.style.display = 'none';
-    deferredPrompt.prompt();
-
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        console.log('User accepted A2HS prompt');
-      } else {
-        console.log('User dismissed A2HS prompt');
-      }
-      deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('a2hs').style.display = 'block';
     });
-  });
-});
 
+    document.getElementById('a2hs').addEventListener('click', () => {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted A2HS prompt');
+        }
+        deferredPrompt = null;
+        document.getElementById('a2hs').style.display = 'none';
+      });
+    });
   </script>
-<script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js')
-      .then(reg => console.log('Service Worker Registered', reg))
-      .catch(err => console.error('SW registration failed:', err));
-  }
-</script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('SW Registered:', reg))
+        .catch(err => console.error('SW Registration Failed:', err));
+    }
+  </script>
 </body>
 </html>
