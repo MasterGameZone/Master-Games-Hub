@@ -7,12 +7,12 @@
   "theme_color": "#4CAF50",
   "icons": [
     {
-      "src": ""C:\Users\maste\Downloads\logo1922.png"",
+      "src": "C:\Users\maste\Downloads\logo1922.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": ""C:\Users\maste\Downloads\logo512.png"",
+      "src": "C:\Users\maste\Downloads\logo512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
