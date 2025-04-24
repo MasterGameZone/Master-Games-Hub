@@ -1,6 +1,6 @@
 {
   "name": "MGX - Hub",
-  "short_name": "RandomApp",
+  "short_name": "MGX - Hub",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
